@@ -180,13 +180,7 @@
     "AzureSearchStrictness": {
       "type": "int",
       "defaultValue": 3,
-      "allowedValues": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
+      "allowedValues": [1, 2, 3, 4, 5],
       "metadata": {
         "description": "The Azure Search Strictness to use"
       }
@@ -263,7 +257,7 @@
     }
   },
   "variables": {
-    "WebAppImageName": "DOCKER|byocgacontainerreg.azurecr.io/webapp:dev",
+    "WebAppImageName": "DOCKER|acrbyocga.azurecr.io/webapp:latest",
     "cosmosdb_database_name": "db_conversation_history",
     "cosmosdb_container_name": "conversations",
     "roleDefinitionId": "00000000-0000-0000-0000-000000000002",
@@ -284,9 +278,9 @@
         "name": "S0"
       },
       "properties": {
-          "customSubDomainName": "[parameters('AzureOpenAIResource')]",
-          "publicNetworkAccess": "Enabled"
-        }
+        "customSubDomainName": "[parameters('AzureOpenAIResource')]",
+        "publicNetworkAccess": "Enabled"
+      }
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
@@ -612,9 +606,7 @@
             ]
           },
           "partitionKey": {
-            "paths": [
-              "/userId"
-            ],
+            "paths": ["/userId"],
             "kind": "Hash"
           }
         }
