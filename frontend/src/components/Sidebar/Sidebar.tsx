@@ -1,5 +1,3 @@
-//// changed sidebar
-
 import React, { useEffect, useState, useContext } from 'react'
 import { Stack, Text } from '@fluentui/react'
 import {
@@ -40,19 +38,19 @@ const NavigationButton = ({ text, buttonState, onClick }: NavigationButtonProps)
     Browse: (
       <News28Regular
         color={fontColor}
-        // cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
+        cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
       />
     ),
     Generate: (
       <Book28Regular
         color={fontColor}
-        // cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
+        cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
       />
     ),
     Draft: (
       <Notepad28Regular
         color={fontColor}
-        // cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
+        cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
       />
     )
   }
@@ -66,21 +64,8 @@ const NavigationButton = ({ text, buttonState, onClick }: NavigationButtonProps)
   const icon = iconElements[text]
 
   return (
-    // <Stack
-    //   onClick={buttonState === NavigationButtonStates.Inactive ? onClick : () => {}}
-    //   className={buttonStyle}
-    //   style={{ cursor: buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer' }}>
-    //   <Button appearance="transparent" size="large" icon={icon} style={{ padding: '0' }} />
-    //   <Text
-    //     style={{
-    //       color: fontColor,
-    //       cursor: buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'
-    //     }}>
-    //     {text}
-    //   </Text>
-    // </Stack>
     <Stack
-      onClick={buttonState !== NavigationButtonStates.Disabled ? onClick : () => {}}
+      onClick={buttonState === NavigationButtonStates.Inactive ? onClick : () => {}}
       className={buttonStyle}
       style={{ cursor: buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer' }}>
       <Button appearance="transparent" size="large" icon={icon} style={{ padding: '0' }} />
@@ -136,7 +121,7 @@ const Sidebar = (): JSX.Element => {
         <Avatar color="colorful" name={name} />
       </Stack>
       <Stack className={styles.sidebarNavigationContainer}>
-        {/* <NavigationButton
+        <NavigationButton
           text={'Browse'}
           buttonState={
             currentView === 'chat'
@@ -175,33 +160,6 @@ const Sidebar = (): JSX.Element => {
                 ? NavigationButtonStates.Disabled
                 : NavigationButtonStates.Inactive
           }
-          onClick={() => {
-            if (!isGenerating) {
-              navigate('/draft')
-            }
-          }}
-        /> */}
-        <NavigationButton
-          text="Browse"
-          buttonState={currentView === 'chat' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive}
-          onClick={() => {
-            if (!isGenerating) {
-              navigate('/chat')
-            }
-          }}
-        />
-        <NavigationButton
-          text="Generate"
-          buttonState={currentView === 'generate' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive}
-          onClick={() => {
-            if (!isGenerating) {
-              navigate('/generate')
-            }
-          }}
-        />
-        <NavigationButton
-          text="Draft"
-          buttonState={currentView === 'draft' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive}
           onClick={() => {
             if (!isGenerating) {
               navigate('/draft')
