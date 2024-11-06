@@ -121,7 +121,7 @@ const Sidebar = (): JSX.Element => {
         <Avatar color="colorful" name={name} />
       </Stack>
       <Stack className={styles.sidebarNavigationContainer}>
-        <NavigationButton
+        {/* <NavigationButton
           text={'Browse'}
           buttonState={
             currentView === 'chat'
@@ -157,6 +157,45 @@ const Sidebar = (): JSX.Element => {
             currentView === 'draft'
               ? NavigationButtonStates.Active
               : appStateContext?.state.isGenerating
+                ? NavigationButtonStates.Disabled
+                : NavigationButtonStates.Inactive
+          }
+          onClick={() => {
+            if (!isGenerating) {
+              navigate('/draft')
+            }
+          }}
+        /> */}
+        <NavigationButton
+          text={'Browse'}
+          buttonState={
+            currentView === 'chat'
+              ? NavigationButtonStates.Active
+              : isGenerating
+                ? NavigationButtonStates.Disabled
+                : NavigationButtonStates.Inactive
+          }
+          onClick={() => {
+            if (!isGenerating) {
+              navigate('/chat')
+            }
+          }}
+        />
+        <NavigationButton
+          text={'Generate'}
+          buttonState={currentView === 'generate' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive}
+          onClick={() => {
+            if (!isGenerating) {
+              navigate('/generate')
+            }
+          }}
+        />
+        <NavigationButton
+          text={'Draft'}
+          buttonState={
+            currentView === 'draft'
+              ? NavigationButtonStates.Active
+              : isGenerating
                 ? NavigationButtonStates.Disabled
                 : NavigationButtonStates.Inactive
           }
