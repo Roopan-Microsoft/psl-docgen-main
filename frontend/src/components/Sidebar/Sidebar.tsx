@@ -13,7 +13,7 @@ import { Button, Avatar } from '@fluentui/react-components'
 import styles from './Sidebar.module.css'
 import { AppStateContext } from '../../state/AppProvider'
 import { getUserInfo } from '../../api'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, useMatch } from 'react-router-dom'
 
 enum NavigationButtonStates {
   Active = 'active',
@@ -28,6 +28,7 @@ interface NavigationButtonProps {
 }
 
 const NavigationButton = ({ text, buttonState, onClick }: NavigationButtonProps) => {
+  //console.log(`Rendering button: ${text}, state: ${buttonState}`)
   const fontColor = {
     [NavigationButtonStates.Active]: '#367AF6',
     [NavigationButtonStates.Inactive]: '#BEBBB8',
@@ -35,9 +36,24 @@ const NavigationButton = ({ text, buttonState, onClick }: NavigationButtonProps)
   }[buttonState]
 
   const iconElements: { [key: string]: JSX.Element } = {
-    Browse: <News28Regular color={fontColor} />,
-    Generate: <Book28Regular color={fontColor} />,
-    Draft: <Notepad28Regular color={fontColor} />
+    Browse: (
+      <News28Regular
+        color={fontColor}
+        cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
+      />
+    ),
+    Generate: (
+      <Book28Regular
+        color={fontColor}
+        cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
+      />
+    ),
+    Draft: (
+      <Notepad28Regular
+        color={fontColor}
+        cursor={buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'}
+      />
+    )
   }
 
   const buttonStyle = {
@@ -51,7 +67,13 @@ const NavigationButton = ({ text, buttonState, onClick }: NavigationButtonProps)
   return (
     <Stack onClick={buttonState === NavigationButtonStates.Inactive ? onClick : () => {}} className={buttonStyle}>
       <Button appearance="transparent" size="large" icon={icon} style={{ padding: '0' }} />
-      <Text style={{ color: fontColor }}>{text}</Text>
+      <Text
+        style={{
+          color: fontColor,
+          cursor: buttonState === NavigationButtonStates.Disabled ? 'not-allowed' : 'pointer'
+        }}>
+        {text}
+      </Text>
     </Stack>
   )
 }
@@ -61,6 +83,15 @@ const Sidebar = (): JSX.Element => {
   const navigate = useNavigate()
   const location = useLocation()
   const [name, setName] = useState<string>('')
+
+  const isGenerating = appStateContext?.state.isGenerating
+
+  // Match routes with `react-router-dom`
+  const isGenerateRoute = useMatch('/generate')
+  const isChatRoute = useMatch('/chat')
+  const isDraftRoute = useMatch('/draft')
+
+  const currentView = isGenerateRoute ? 'generate' : isChatRoute ? 'chat' : isDraftRoute ? 'draft' : ''
 
   useEffect(() => {
     if (!appStateContext) {
@@ -77,7 +108,9 @@ const Sidebar = (): JSX.Element => {
           console.error('Error fetching user info: ', err)
         })
     }
-  }, [])
+    // console.log('AppStateContext state:', appStateContext?.state)
+    // console.log('Current location:', location.pathname)
+  }, [appStateContext])
 
   // determine url from react-router-dom
   const determineView = () => {
@@ -88,14 +121,6 @@ const Sidebar = (): JSX.Element => {
     return currentUrl
   }
 
-  const currentView = determineView()
-
-  // inactive, disabled, active
-  var draftButtonState = NavigationButtonStates.Disabled
-  if (appStateContext?.state.draftedDocument) {
-    draftButtonState = currentView === 'draft' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive
-  }
-
   return (
     <Stack className={styles.sidebarContainer}>
       <Stack horizontal className={styles.avatarContainer}>
@@ -104,23 +129,47 @@ const Sidebar = (): JSX.Element => {
       <Stack className={styles.sidebarNavigationContainer}>
         <NavigationButton
           text={'Browse'}
-          buttonState={currentView === 'chat' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive}
+          buttonState={
+            currentView === 'chat'
+              ? NavigationButtonStates.Active
+              : isGenerating
+                ? NavigationButtonStates.Disabled
+                : NavigationButtonStates.Inactive
+          }
           onClick={() => {
-            navigate('/chat')
+            if (!isGenerating) {
+              navigate('/chat')
+            }
           }}
         />
         <NavigationButton
           text={'Generate'}
-          buttonState={currentView === 'generate' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive}
+          buttonState={
+            currentView === 'generate'
+              ? NavigationButtonStates.Active
+              : isGenerating
+                ? NavigationButtonStates.Disabled
+                : NavigationButtonStates.Inactive
+          }
           onClick={() => {
-            navigate('/generate')
+            if (!isGenerating) {
+              navigate('/generate')
+            }
           }}
         />
         <NavigationButton
           text={'Draft'}
-          buttonState={draftButtonState}
+          buttonState={
+            currentView === 'draft'
+              ? NavigationButtonStates.Active
+              : isGenerating
+                ? NavigationButtonStates.Disabled
+                : NavigationButtonStates.Inactive
+          }
           onClick={() => {
-            navigate('/draft')
+            if (!isGenerating) {
+              navigate('/draft')
+            }
           }}
         />
       </Stack>
