@@ -172,9 +172,7 @@ const Sidebar = (): JSX.Element => {
           //       : NavigationButtonStates.Inactive
           // }
           onClick={() => {
-            if (!isLoading) {
-              navigate('/draft')
-            }
+            navigate('/draft')
           }}
         />
       </Stack>
