@@ -77,11 +77,6 @@ const NavigationButton = ({ text, buttonState, onClick }: NavigationButtonProps)
         {text}
       </Text>
     </Stack>
-
-    // <Stack onClick={buttonState === NavigationButtonStates.Inactive ? onClick : () => {}} className={buttonStyle}>
-    //   <Button appearance="transparent" size="large" icon={icon} style={{ padding: '0' }} />
-    //   <Text style={{ color: fontColor }}>{text}</Text>
-    // </Stack>
   )
 }
 
@@ -111,7 +106,6 @@ const Sidebar = (): JSX.Element => {
 
   useEffect(() => {
     setIsLoading(appStateContext?.state.isGenerating)
-    console.log('Appstate:', appStateContext?.state.isGenerating)
   }, [appStateContext?.state.isGenerating])
 
   // determine url from react-router-dom
@@ -124,20 +118,6 @@ const Sidebar = (): JSX.Element => {
   }
 
   const currentView = determineView()
-  console.log('currentView', currentView)
-  // const isGenerating = appStateContext?.state.isGenerating
-
-  // const draftButtonState = appStateContext?.state.draftedDocument
-  //   ? currentView === 'draft'
-  //     ? NavigationButtonStates.Active
-  //     : NavigationButtonStates.Inactive
-  //   : NavigationButtonStates.Disabled
-
-  // inactive, disabled, active
-  // var draftButtonState = NavigationButtonStates.Disabled
-  // if (appStateContext?.state.draftedDocument) {
-  //   draftButtonState = currentView === 'draft' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive
-  // }
   return (
     <Stack className={styles.sidebarContainer}>
       <Stack horizontal className={styles.avatarContainer}>
@@ -176,7 +156,6 @@ const Sidebar = (): JSX.Element => {
         />
         <NavigationButton
           text={'Draft'}
-          // buttonState={draftButtonState}
           buttonState={
             currentView === 'draft'
               ? NavigationButtonStates.Active
