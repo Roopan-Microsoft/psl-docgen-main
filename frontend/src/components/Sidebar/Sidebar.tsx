@@ -132,7 +132,7 @@ const Sidebar = (): JSX.Element => {
       </Stack>
       <Stack className={styles.sidebarNavigationContainer}>
         <NavigationButton
-          text={'Browse'}
+          text={'Browser'}
           buttonState={
             currentView === 'chat'
               ? NavigationButtonStates.Active
