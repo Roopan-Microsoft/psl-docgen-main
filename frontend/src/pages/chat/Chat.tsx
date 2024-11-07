@@ -155,9 +155,9 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
     processTemplateResponse()
   }, [location])
 
-  useEffect(() => {
-    appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: appStateContext?.state.isGenerating })
-  }, [isLoading])
+  // useEffect(() => {
+  //   appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: appStateContext?.state.isGenerating })
+  // }, [isLoading])
 
   useEffect(() => {
     if (
@@ -283,7 +283,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
 
   const makeApiRequestWithoutCosmosDB = async (question: string, conversationId?: string) => {
     setIsLoading(true)
-    appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: true })
+    // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: true })
     setShowLoadingMessage(true)
     const abortController = new AbortController()
     abortFuncs.current.unshift(abortController)
@@ -400,7 +400,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
     } finally {
       setIsLoading(false)
       setShowLoadingMessage(false)
-      appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
+      // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
       abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
       setProcessMessages(messageStatus.Done)
     }
@@ -410,7 +410,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
 
   const makeApiRequestWithCosmosDB = async (question: string, conversationId?: string) => {
     setIsLoading(true)
-    appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: true })
+    // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: true })
     setShowLoadingMessage(true)
     const abortController = new AbortController()
     abortFuncs.current.unshift(abortController)
@@ -430,7 +430,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
       if (!conversation) {
         console.error('Conversation not found.')
         setIsLoading(false)
-        appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
+        // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
         setShowLoadingMessage(false)
         abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
         return
@@ -476,7 +476,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
         } else {
           setMessages([...messages, userMessage, errorChatMsg])
           setIsLoading(false)
-          appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
+          // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
           setShowLoadingMessage(false)
           abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
           return
@@ -538,7 +538,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
           if (!resultConversation) {
             console.error('Conversation not found.')
             setIsLoading(false)
-            appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
+            // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
             setShowLoadingMessage(false)
             abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
             return
@@ -559,7 +559,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
         }
         if (!resultConversation) {
           setIsLoading(false)
-          appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
+          // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
           setShowLoadingMessage(false)
           abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
           return
@@ -593,7 +593,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
           if (!resultConversation) {
             console.error('Conversation not found.')
             setIsLoading(false)
-            appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
+            // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
             setShowLoadingMessage(false)
             abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
             return
@@ -610,7 +610,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
             }
             setMessages([...messages, userMessage, errorChatMsg])
             setIsLoading(false)
-            appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
+            // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
             setShowLoadingMessage(false)
             abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
             return
@@ -638,7 +638,6 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
     } finally {
       setIsLoading(false)
       setShowLoadingMessage(false)
-      appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
       abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
       setProcessMessages(messageStatus.Done)
     }
@@ -762,7 +761,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
     abortFuncs.current.forEach(a => a.abort())
     setShowLoadingMessage(false)
     setIsLoading(false)
-    appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
+    // appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
   }
 
   useEffect(() => {

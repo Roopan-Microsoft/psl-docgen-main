@@ -118,6 +118,13 @@ const Sidebar = (): JSX.Element => {
   }
 
   const currentView = determineView()
+
+  // inactive, disabled, active
+  var draftButtonState = NavigationButtonStates.Disabled
+  if (appStateContext?.state.draftedDocument) {
+    draftButtonState = currentView === 'draft' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive
+  }
+
   return (
     <Stack className={styles.sidebarContainer}>
       <Stack horizontal className={styles.avatarContainer}>
@@ -156,13 +163,14 @@ const Sidebar = (): JSX.Element => {
         />
         <NavigationButton
           text={'Draft'}
-          buttonState={
-            currentView === 'draft'
-              ? NavigationButtonStates.Active
-              : isLoading
-                ? NavigationButtonStates.Disabled
-                : NavigationButtonStates.Inactive
-          }
+          buttonState={draftButtonState}
+          // buttonState={
+          //   currentView === 'draft'
+          //     ? NavigationButtonStates.Active
+          //     : isLoading
+          //       ? NavigationButtonStates.Disabled
+          //       : NavigationButtonStates.Inactive
+          // }
           onClick={() => {
             if (!isLoading) {
               navigate('/draft')
