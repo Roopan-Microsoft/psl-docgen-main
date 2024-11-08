@@ -85,7 +85,13 @@ const Sidebar = (): JSX.Element => {
   const navigate = useNavigate()
   const location = useLocation()
   const [name, setName] = useState<string>('')
-  const [isLoading, setIsLoading] = useState<boolean>()
+  useEffect(() => {
+    if (appStateContext?.state.isRequestInitiated == true) {
+      NavigationButtonStates.Disabled
+    } else {
+      NavigationButtonStates.Active
+    }
+  })
 
   useEffect(() => {
     if (!appStateContext) {
@@ -104,10 +110,6 @@ const Sidebar = (): JSX.Element => {
     }
   }, [appStateContext])
 
-  useEffect(() => {
-    setIsLoading(appStateContext?.state.isGenerating)
-  }, [appStateContext?.state.isGenerating])
-
   // determine url from react-router-dom
   const determineView = () => {
     const url = location.pathname
@@ -118,12 +120,12 @@ const Sidebar = (): JSX.Element => {
   }
 
   const currentView = determineView()
-
   // inactive, disabled, active
   var draftButtonState = NavigationButtonStates.Disabled
   if (appStateContext?.state.draftedDocument) {
     draftButtonState = currentView === 'draft' ? NavigationButtonStates.Active : NavigationButtonStates.Inactive
   }
+  const isGenerating = appStateContext?.state.isRequestInitiated
 
   return (
     <Stack className={styles.sidebarContainer}>
@@ -136,12 +138,12 @@ const Sidebar = (): JSX.Element => {
           buttonState={
             currentView === 'chat'
               ? NavigationButtonStates.Active
-              : isLoading
+              : appStateContext?.state.isRequestInitiated
                 ? NavigationButtonStates.Disabled
                 : NavigationButtonStates.Inactive
           }
           onClick={() => {
-            if (!isLoading) {
+            if (!isGenerating) {
               navigate('/chat')
             }
           }}
@@ -151,12 +153,12 @@ const Sidebar = (): JSX.Element => {
           buttonState={
             currentView === 'generate'
               ? NavigationButtonStates.Active
-              : isLoading
+              : appStateContext?.state.isRequestInitiated
                 ? NavigationButtonStates.Disabled
                 : NavigationButtonStates.Inactive
           }
           onClick={() => {
-            if (!isLoading) {
+            if (!isGenerating) {
               navigate('/generate')
             }
           }}
@@ -164,13 +166,6 @@ const Sidebar = (): JSX.Element => {
         <NavigationButton
           text={'Draft'}
           buttonState={draftButtonState}
-          // buttonState={
-          //   currentView === 'draft'
-          //     ? NavigationButtonStates.Active
-          //     : isLoading
-          //       ? NavigationButtonStates.Disabled
-          //       : NavigationButtonStates.Inactive
-          // }
           onClick={() => {
             navigate('/draft')
           }}
