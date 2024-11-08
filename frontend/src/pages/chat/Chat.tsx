@@ -637,6 +637,7 @@ const Chat = ({ type = ChatType.Browse }: Props) => {
       }
     } finally {
       setIsLoading(false)
+      appStateContext?.dispatch({ type: 'GENERATE_ISLODING', payload: false })
       setShowLoadingMessage(false)
       abortFuncs.current = abortFuncs.current.filter(a => a !== abortController)
       setProcessMessages(messageStatus.Done)
