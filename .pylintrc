@@ -1,0 +1,5 @@
+[MASTER]
+ignore=venv,migrations
+
+[MESSAGES CONTROL]
+disable=C0114,C0115,C0116  # Disabling module, class, and function docstring checks
