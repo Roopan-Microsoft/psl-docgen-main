@@ -128,7 +128,7 @@ jobs:
           set -e
           echo "Deleting the resources from the subscription..."
           az deployment sub delete \
-            --name ${{ env.SOLUTION_PREFIX }} \
+            --name rg-${{ env.ENVIRONMENT_NAME }} \
             --subscription ${{ secrets.AZURE_SUBSCRIPTION_ID }} \
             --no-wait
 
